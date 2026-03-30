@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from 'src/config';
+import { CreateAreaDto } from './dto';
+import { catchError } from 'rxjs';
 
 @Controller('administrative-data')
 export class AdministrativeDataController {
@@ -8,10 +10,16 @@ export class AdministrativeDataController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy
   ) {}
 
-  // @Post()
-  // create(@Body() createAdministrativeDatumDto: any) {
-  //   return this.administrativeDataService.create(createAdministrativeDatumDto);
-  // }
+  //-------- AREAS ---------
+  @Post('/create-area')
+  create(@Body() createAreaDto: CreateAreaDto) {
+    return this.client.send({cmd:'createArea'}, createAreaDto)
+    .pipe(
+      catchError((err) => {
+        throw new RpcException(err)
+      })
+    )
+  }
 
   @Get('/findAll')
   findAll() {
