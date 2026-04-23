@@ -25,7 +25,7 @@ export class CareerHistoryController {
 
   @Get('find-all-career-history')
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.client.send({cmd: 'finAllCareerHistory'}, paginationDto)
+    return this.client.send({cmd: 'findAllCareerHistory'}, paginationDto)
     .pipe(
       catchError((err) => {
         throw new RpcException(err);
