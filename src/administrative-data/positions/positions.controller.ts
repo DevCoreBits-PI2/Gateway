@@ -55,4 +55,14 @@ export class PositionsController {
       }),
     );
   }
+
+  @Get('positions-tree')
+  getPositionsTree(){
+    return this.client.send({ cmd: 'positionsTree' },{})
+    .pipe(
+      catchError((err) => {
+        throw new RpcException(err);
+      })
+    )
+  }
 }
