@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
+import { UsersController } from './employees/users.controller';
 import { NatsModule } from '@/src/transports/nats.module';
+import { AdminController } from './admin/admin.controller';
 
 @Module({
-  controllers: [UsersController],
+  controllers: [UsersController, AdminController],
   providers: [],
   imports: [
     NatsModule
