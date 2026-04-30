@@ -20,12 +20,6 @@ export class UsersController {
     return this.client.send({cmd:'inviteUser'}, inviteUserDto);
   }
 
-  @Post('/create-admin')
-  createAdmin(@Body() createAdminDto: CreateAdminDto){
-  
-    return this.client.send({cmd : 'createAdmin'}, createAdminDto)
-  
-  }
 
   @Get('/users/findAll')
   findAll() {
@@ -37,15 +31,6 @@ export class UsersController {
   return this.client.send({cmd: "findUserById"}, id);
   }
 
-  @Get('/admin')
-  findAllAdmins(){
-    return this.client.send({cmd: "findAllAdmins"}, {});
-  }
-
-  @Get('/admin/:id')
-  findAdminById(@Param('id') id: string){
-    return this.client.send({cmd: "findAdminById"}, id);
-  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
