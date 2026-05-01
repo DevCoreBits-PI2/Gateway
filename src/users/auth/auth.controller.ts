@@ -12,8 +12,8 @@ import { NATS_SERVICE } from '@/src/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginDto, LoginOtpDto, VerifyOtpDto } from './dto';
 
-@Controller('users')
-export class UsersController {
+@Controller('users/auth')
+export class AuthController {
   constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
   // @Post()
