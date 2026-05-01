@@ -12,7 +12,7 @@ import { NATS_SERVICE } from '@/src/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateAdminDto } from './dto';
 
-@Controller()
+@Controller('users/admin')
 export class AdminController {
   constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
