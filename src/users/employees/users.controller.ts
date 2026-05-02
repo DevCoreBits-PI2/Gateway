@@ -56,6 +56,16 @@ export class UsersController {
     return this.client.send({ cmd: 'updateEmployee' }, { id, ...updateEmployeeDto });
   }
 
+  @Get('/firstTimeSetup/:id')
+  firstTimeSetup(@Param('id') id: string) {
+    return this.client.send({ cmd: 'firstTimeSetup' }, id);
+  }
+
+  @Patch('/completeFirstLogin/:id')
+  completeFirstLogin(@Param('id') id: string) {
+    return this.client.send({ cmd: 'completeFirstLogin' }, id);
+  }
+
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
   //   return this.usersService.update(+id, updateUserDto);
