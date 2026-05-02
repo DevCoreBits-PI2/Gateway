@@ -12,7 +12,7 @@ import { NATS_SERVICE } from '@/src/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { LoginDto, LoginOtpDto, VerifyOtpDto } from './dto';
 
-@Controller('users/auth')
+@Controller('auth')
 export class AuthController {
   constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 

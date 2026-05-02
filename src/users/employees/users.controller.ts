@@ -8,7 +8,6 @@ import {
   Delete,
   Inject,
 } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { NATS_SERVICE } from '@/src/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { InviteUserDto,  UpdateProfileDto, UpdateEmployeeDto} from './dto';
