@@ -1,10 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseIntPipe, UseInterceptors, UploadedFile, BadRequestException, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, ParseIntPipe, UseInterceptors, UploadedFile, BadRequestException, Query, UseGuards } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError, firstValueFrom } from 'rxjs';
 import { NATS_SERVICE } from '@/src/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PaginationDto } from '@/src/common';
 import { CreateContractDto, RenewContractDto, UpdateContractDto } from './dto';
+import { AuthGuard, PositionGuard } from '@/src/guards';
+import { Positions } from '@/src/decorators';
+import { createContractEnum } from '@/src/guards/enum/position.enum';
 
 @Controller('administrative-data/contracts')
 export class ContractsController {
@@ -12,6 +15,8 @@ export class ContractsController {
     @Inject(NATS_SERVICE) private readonly client: ClientProxy,
   ) {}
 
+  @UseGuards(AuthGuard, PositionGuard)
+  @Positions(createContractEnum['Auxiliar de Talento Humano'], createContractEnum['Jefe de Talento Humano'])
   @Post('create-contract')
   @UseInterceptors(FileInterceptor('file'))
   async createContract(@UploadedFile() file: Express.Multer.File, @Body() createContractDto: CreateContractDto) {

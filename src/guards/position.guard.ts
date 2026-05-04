@@ -15,7 +15,9 @@ import { POSITIONS_KEY } from '../decorators';
                                                             
       if (!allowedPositions?.length) return true;                                                                                                                                             
    
-      const request = context.switchToHttp().getRequest();                                                                                                                                    
+      const request = context.switchToHttp().getRequest();
+      if (request.isAdmin === true) return true;
+
       if (!allowedPositions.includes(request.position)) {   
         throw new ForbiddenException('Insufficient position');
       }                                                                                                                                                                                       
