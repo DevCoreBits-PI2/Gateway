@@ -23,12 +23,12 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const { position, role, token: newToken } = await firstValueFrom(
+      const { position, isAdmin, token: newToken } = await firstValueFrom(
         this.client.send({ cmd: 'verifyToken' }, token),
       );
 
       request['position'] = position;
-      request['role'] = role;
+      request['isAdmin'] = isAdmin;
       request['token'] = newToken;
     } catch {
       throw new UnauthorizedException();
