@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsNumber, isNumber, IsPositive, IsString, IsEnum } from "class-validator";
+import { IsDate, IsNumber, isNumber, IsPositive, IsString, IsEnum, IsOptional } from "class-validator";
 import { career_type_change, CareerTypeChangeListDto } from "../enum/career_type_change";
 export class CreateCareerHistoryDto {
     @IsString()
@@ -17,4 +17,9 @@ export class CreateCareerHistoryDto {
     @IsNumber()
     @IsPositive()
     id_employee: number
+
+    @IsOptional()
+    @IsNumber()
+    @IsPositive()
+    id_evaluation?: number
 }
