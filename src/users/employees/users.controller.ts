@@ -1,14 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Inject,
+} from '@nestjs/common';
 import { NATS_SERVICE } from '@/src/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { InviteUserDto, CreateAdminDto } from './dto';
+import { InviteUserDto,  UpdateProfileDto, UpdateEmployeeDto} from './dto';
 
-@Controller('users')
+@Controller('employees')
 export class UsersController {
-    constructor(
-      @Inject(NATS_SERVICE) private readonly client: ClientProxy
-    ) {}
+  constructor(@Inject(NATS_SERVICE) private readonly client: ClientProxy) {}
 
   // @Post()
   // create(@Body() createUserDto: CreateUserDto) {
@@ -17,34 +23,47 @@ export class UsersController {
 
   @Post('/inviteUser')
   inviteUser(@Body() inviteUserDto: InviteUserDto) {
-    return this.client.send({cmd:'inviteUser'}, inviteUserDto);
+    return this.client.send({ cmd: 'inviteUser' }, inviteUserDto);
   }
 
-  @Post('/create-admin')
-  createAdmin(@Body() createAdminDto: CreateAdminDto){
-  
-    return this.client.send({cmd : 'createAdmin'}, createAdminDto)
-  
-  }
-
-  @Get('/users/findAll')
+  @Get('/findAll')
   findAll() {
-    return this.client.send({cmd:'findAllUsers'}, {});
+    return this.client.send({ cmd: 'findAllUsers' }, {});
   }
 
-  @Get('/users/:id')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
-  return this.client.send({cmd: "findUserById"}, id);
+    return this.client.send({ cmd: 'findUserById' }, id);
   }
 
-  @Get('/admin')
-  findAllAdmins(){
-    return this.client.send({cmd: "findAllAdmins"}, {});
+  @Get('/getMyProfile/:id')
+  getMyProfile(@Param('id') id: string) {
+    return this.client.send({ cmd: 'getMyProfile' }, id);
   }
 
-  @Get('/admin/:id')
-  findAdminById(@Param('id') id: string){
-    return this.client.send({cmd: "findAdminById"}, id);
+  @Get('/getSubordinates/:id') /* Se pasa ID del gerente que tiene subordinados. */
+  getSubordinates(@Param('id') id: string) {
+    return this.client.send({ cmd: 'getSubordinates' }, id);
+  }
+
+  @Patch('/updateUser/:id') /* Este es para que un empleado pueda cambiar su propio perfil. */ 
+  updateUser(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
+    return this.client.send({ cmd: 'updateUser' }, { id, ...updateProfileDto });
+  }
+
+  @Patch('/updateEmployee/:id') /* Se envía la ID del usuario que se quiere cambiar, además, este es para cambiar cargo, jefe, o estado.*/ 
+  updateEmployee(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {
+    return this.client.send({ cmd: 'updateEmployee' }, { id, ...updateEmployeeDto });
+  }
+
+  @Get('/firstTimeSetup/:id')
+  firstTimeSetup(@Param('id') id: string) {
+    return this.client.send({ cmd: 'firstTimeSetup' }, id);
+  }
+
+  @Patch('/completeFirstLogin/:id')
+  completeFirstLogin(@Param('id') id: string) {
+    return this.client.send({ cmd: 'completeFirstLogin' }, id);
   }
 
   // @Patch(':id')
